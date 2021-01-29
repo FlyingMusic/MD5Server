@@ -6,7 +6,7 @@
 enum CMD_TYPE {
     CMD_REQUEST = 1,
     CMD_RESPONCE,
-	CMD_DATA,
+    CMD_DATA,
     CMD_FINISH,
     CMD_RESULT,
     CMD_ERROR,
