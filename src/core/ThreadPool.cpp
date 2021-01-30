@@ -128,7 +128,7 @@ void thread_porcess(void *arg) {
 }
 void remove_map_item(fd_session_iter_t fd_session_iter)
 {
-    close(fd_session_iter->first);
+    //close(fd_session_iter->first); 不能在关闭另一个线程中epoll中的fd,未定义行为
     delete(fd_session_iter->second);
     fd_session_map.erase(fd_session_iter);
 }
