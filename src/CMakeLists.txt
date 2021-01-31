@@ -1,5 +1,5 @@
 
-SET(MODULES queue)
+SET(MODULES md5calc queue)
 foreach(module ${MODULES})
     MESSAGE(STATUS "generate module ${module}")
     include_directories(${module})

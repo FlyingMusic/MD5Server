@@ -1,4 +1,4 @@
-set(BINS basic_test thread_test)
+set(BINS queue_test thread_test)
 
 if(DEBUG_CONCURRENT_QUEUE)
     add_definitions(-D_DEBUG_CONCURRENT_QUEUE_)

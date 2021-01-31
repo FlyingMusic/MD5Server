@@ -1,5 +1,7 @@
 set(module md5calc)
 
 add_library(${module}_LIBRARIES STATIC
-    Md5.cpp
+    md5.cpp
     )
+
+add_subdirectory(bin)
