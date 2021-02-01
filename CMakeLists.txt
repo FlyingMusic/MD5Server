@@ -29,8 +29,10 @@ SET(CMAKE_C_FLAGS_DEBUG "$ENV{CFLAGS} ${CFLAGS}")
 SET(CMAKE_C_FLAGS_RELEASE "$ENV{CFLAGS} ${CFLAGS}")
 
 # global head files directory
-include_directories(${module})
+SET(MODULES core md5calc queue threadpool)
+foreach(module ${MODULES})
+    include_directories("src/${module}")
+endforeach()
 
-# subdirectory
-add_subdirectory(bin)
 add_subdirectory(src)
+add_subdirectory(bin)
