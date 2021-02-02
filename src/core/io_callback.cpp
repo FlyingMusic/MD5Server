@@ -14,6 +14,7 @@
 #include "concurrent_queue.h"
 #include "ThreadPool.h"
 #include "msg_type.h"
+#include "inter.h"
 
 #define MAXCLIENT    20
 #define MAXEPOLL    100
@@ -21,13 +22,13 @@
 void io_thread_callback(void *arg)
 {
     md5_inter_t p_inter = (md5_inter_t)arg;
-    concurrent_queue &request_queue = p_inter->request_queue;
-    concurrent_queue &feedback_queue = p_inter->feedback_queue;
+    concurrent_queue<int> &request_queue = p_inter->request_queue;
+    concurrent_queue<int> &feedback_queue = p_inter->feedback_queue;
 
     int socketfd = socket(AF_INET, SOCK_STREAM, 0);
     if(socketfd < 0) {
-        printf("socket fd[%d] is invalid!\n");
-        return -1;
+        printf("socket fd[%d] is invalid!\n", socketfd);
+        return;
     }
     printf("socket[%d] success...\n", socketfd);
     int nBufLen = 0;
@@ -48,7 +49,7 @@ void io_thread_callback(void *arg)
     if(ret < 0) {
         printf("bind error: %s\n", strerror(errno));
         close(socketfd);
-        return -1;
+        return;
     } 
     printf("bind success...\n");
 
@@ -56,7 +57,7 @@ void io_thread_callback(void *arg)
     if(ret < 0) {
         close(socketfd);
         printf("listen error[%s]\n", strerror(errno));
-        return -1;
+        return;
     }
     printf("listen success...\n");
     
@@ -68,7 +69,7 @@ void io_thread_callback(void *arg)
     ret = epoll_ctl(epoll_fd, EPOLL_CTL_ADD, socketfd, &ev);
     if(ret < 0) {
         printf("epoll_ctl error[%s]\n", strerror(errno));
-        return -1;
+        return;
     }
     int curfd = 1;
     while(true) {
@@ -131,9 +132,9 @@ void io_thread_callback(void *arg)
             }
         }
         int errfd = -1;
-        while(feedback_queue.try_pop(&errfd)) {
+        while(feedback_queue.try_pop(errfd)) {
             close(errfd);
-            ret = epoll_ctl(epoll_fd, EPOLL_CTL_DEL, evs[i].data.fd, &ev);
+            ret = epoll_ctl(epoll_fd, EPOLL_CTL_DEL, errfd, &ev);
             if(ret < 0) {
                 printf("epoll_ctl error[%s]\n", strerror(errno));
                 continue;
@@ -142,8 +143,5 @@ void io_thread_callback(void *arg)
         }
     } //while
     printf("server will stop!!!\n");
-    getchar();
-    wait_threads();
-    close(socketfd);
-    return 0;
+    return;
 }

@@ -13,7 +13,7 @@ int ThreadPool::start()
             printf("create pthread fail!\n");
             return -1;
         }
-        printf("create pthread[%u] success!\n", m_pids[i]);
+        printf("create pthread[%lu] success!\n", m_pids[i]);
         usleep(200*1000);
     }
     return 0;

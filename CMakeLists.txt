@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 3.0)
 
 # Set the project name
 project (server)
@@ -29,10 +29,6 @@ SET(CMAKE_C_FLAGS_DEBUG "$ENV{CFLAGS} ${CFLAGS}")
 SET(CMAKE_C_FLAGS_RELEASE "$ENV{CFLAGS} ${CFLAGS}")
 
 # global head files directory
-SET(MODULES core md5calc queue threadpool)
-foreach(module ${MODULES})
-    include_directories("src/${module}")
-endforeach()
 
 add_subdirectory(src)
 add_subdirectory(bin)

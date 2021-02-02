@@ -1,6 +1,7 @@
 #ifndef _SESSION_H_
 #define _SESSION_H_
 
+#include <string.h>
 #include "msg_type.h"
 #include "md5.h"
 
